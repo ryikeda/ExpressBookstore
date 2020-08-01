@@ -1,3 +1,3 @@
-# Lunch.ly
+# ExpressBookstore
 
-A server-side templated Express application with custom URLs
+An application that validates a resource and then add tests to the application
