@@ -140,7 +140,7 @@ describe("POST /books", () => {
 });
 
 // PUT Route
-describe("PUT /books/:id", async () => {
+describe("PUT /books/:isbn", async () => {
   const updateBook = {
     amazon_url: "https://amazon.com/updateBook",
     author: "Updated Author",
@@ -166,5 +166,13 @@ describe("PUT /books/:id", async () => {
   test("Responds with 404 if not found", async () => {
     const res = await request(app).put(`/books/0`).send(updateBook);
     expect(res.statusCode).toBe(404);
+  });
+});
+
+// DELETE Route
+describe("DELETE /books/:isbn", async () => {
+  test("Deletes a single a book", async () => {
+    const res = await request(app).delete(`/books/${bookIsbn}`);
+    expect(res.body).toEqual({ message: "Book deleted" });
   });
 });
