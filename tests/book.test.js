@@ -138,3 +138,33 @@ describe("POST /books", () => {
     expect(res.body.error.error).toContain('instance requires property "year"');
   });
 });
+
+// PUT Route
+describe("PUT /books/:id", async () => {
+  const updateBook = {
+    amazon_url: "https://amazon.com/updateBook",
+    author: "Updated Author",
+    language: "Updated Language",
+    pages: 1000,
+    publisher: "Updated Publisher",
+    title: "Updated title",
+    year: 2000,
+  };
+
+  test("Updates a single book", async () => {
+    const res = await request(app).put(`/books/${bookIsbn}`).send(updateBook);
+    expect(res.body.book).toHaveProperty("isbn");
+    expect(res.body.book.author).toBe(updateBook.author);
+    expect(res.body.book.amazon_url).toBe(updateBook.amazon_url);
+    expect(res.body.book.language).toBe(updateBook.language);
+    expect(res.body.book.pages).toBe(updateBook.pages);
+    expect(res.body.book.publisher).toBe(updateBook.publisher);
+    expect(res.body.book.title).toBe(updateBook.title);
+    expect(res.body.book.year).toBe(updateBook.year);
+  });
+
+  test("Responds with 404 if not found", async () => {
+    const res = await request(app).put(`/books/0`).send(updateBook);
+    expect(res.statusCode).toBe(404);
+  });
+});
