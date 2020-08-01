@@ -29,6 +29,7 @@ afterAll(async () => {
   await db.end();
 });
 
+// GET Routes
 describe("GET /books", () => {
   test("Gets a list of one book", async () => {
     const res = await request(app).get(`/books`);
@@ -36,5 +37,19 @@ describe("GET /books", () => {
     expect(books).toHaveLength(1);
     expect(books[0].isbn).toEqual(bookIsbn);
     expect(books[0].year).toEqual(2020);
+  });
+});
+
+describe("GET /books/:isbn", () => {
+  test("Gets a single book by isbn", async () => {
+    const res = await request(app).get(`/books/${bookIsbn}`);
+    const book = res.body.book;
+    expect(book.isbn).toEqual(bookIsbn);
+    expect(book.year).toEqual(2020);
+  });
+
+  test("Responds with 404 if not found", async () => {
+    const res = await request(app).get(`/books/0`);
+    expect(res.statusCode).toBe(404);
   });
 });
