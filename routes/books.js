@@ -42,6 +42,9 @@ router.post("/", async function (req, res, next) {
     const book = await Book.create(req.body);
     return res.status(201).json({ book });
   } catch (err) {
+    if (err.code === "23505") {
+      return next(new ExpressError("Book already in the database", 400));
+    }
     return next(err);
   }
 });
